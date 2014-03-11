@@ -8,7 +8,6 @@ add_subdirectory(src bin)
 # turn it off, incase multi_moc generated. 
 # set(CMAKE_AUTOMOC ON)
 
-
 # Configuring build type
 IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Debug" CACHE STRING

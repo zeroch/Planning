@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <array>
 #include "../common/space2d.h"

@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stack>
+#include <queue>
 
 Astar::Astar(Space * problem):Algorithm(problem)
 {
    target = problem->get_end();
+   tail = NULL;
    head = (Astar::node *)malloc(sizeof(Astar::node));
    head->currentPoint = problem->get_start();
    head->previousNode = nullptr;
@@ -29,7 +31,16 @@ Astar::~Astar(){
 }
 
 void Astar::run(){
+    std::queue<Astar::node *> tmp;
+    tmp.push(head);
+    while(tmp.size()>0){
+        Astar::node * current  = tmp.front();
+        tmp.pop();
+        std::vector<Point *> children = all_points->getNeighbors(current->currentPoint);
+        for(int x = 0; x<children.size(); x++){
 
+        }
+    }
 }
 
 void Astar::pause(){

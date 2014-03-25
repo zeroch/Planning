@@ -25,6 +25,7 @@ private:
     };
 
     node * head;
+    node * tail;
 };
 
 #endif // ASTAR_H

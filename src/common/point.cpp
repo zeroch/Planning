@@ -8,6 +8,14 @@ Point::Point(){
 Point::~Point(){
 	
 }
+
+Point& Point::operator= (const Point &rhs){
+	traversable = rhs.traversable;
+	type = rhs.type;
+	num_dimemsion = rhs.num_dimemsion;
+	memcpy(coordinates, rhs.coordinates,sizeof(int)*num_dimemsion);
+	return *this;
+}
 void Point::set_dimemsion(int num_d){
 	num_dimemsion = num_d;
 }
@@ -26,6 +34,9 @@ int Point::get_coordinate(int x_coor){
 }
 void Point::set_valid(bool valid_){
 	traversable = valid_;
+}
+void Point::set_type(int type_){
+	type = type_;
 }
 bool Point::valid(){
 	return traversable;

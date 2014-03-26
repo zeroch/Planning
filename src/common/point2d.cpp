@@ -6,7 +6,7 @@ Point2D::~Point2D(){
 	
 }
 
-Point2D::Point2D(int * coordinate_, bool traversable_){
+Point2D::Point2D(int * coordinate_, bool traversable_, int type_){
 	
 	num_dimemsion = 2;
 	traversable = traversable_;
@@ -14,15 +14,22 @@ Point2D::Point2D(int * coordinate_, bool traversable_){
 	{
 		coordinates[i]= *(coordinate_+i);
 	}
+	type = type_;
 
 }
-Point2D::Point2D(std::array<int ,2> coordinate_, bool traversable_){
+Point2D::Point2D(std::array<int ,2> coordinate_, bool traversable_, int type_){
 	num_dimemsion = 2;
 	traversable = traversable_;
 	coordinates = coordinate_;
+	type = type_;
+
 
 }
 
+Point2D& Point2D::operator= (const Point2D& rhs){
+	coordinates = rhs.coordinates;
+	return *this;	
+}
 void Point2D::set_coordinate(int *coordinates_){
 	for (int i = 0; i < 2; ++i)
 	{

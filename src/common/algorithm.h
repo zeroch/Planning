@@ -2,17 +2,19 @@
 #define ALGORITHM_H
 #include "path.h"
 #include "space.h"
-class Algorithm
+class Algorithm : public QObject
 {
+    Q_OBJECT
 public:
     Algorithm(Space * problem, int deltaq = 1);
-	~Algorithm();
-	virtual void run();
-	virtual void pause();
-	virtual void stop();
-	virtual void runUntil();
-    virtual Path * pathGenerated();
-	virtual Path * areaExplored();
+    virtual ~Algorithm(){};
+    virtual Path * pathGenerated() = 0;
+    virtual Path * areaExplored() = 0;
+public slots:
+    virtual void run() = 0;
+    virtual void pause() = 0;
+    virtual void stop() = 0;
+    virtual void runUntil() = 0;
 protected:
 	Space * all_points;
 	double deltaq;

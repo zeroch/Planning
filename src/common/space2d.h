@@ -14,15 +14,18 @@ public:
     Space2D();
 	virtual ~Space2D();
 	void add_point(Point2D*);
-	void initialSpace(unsigned int ** raw, Point2D  start_, Point2D  end_, int * resolution);
-    void initFromImage(char*);
+    void initFromImage(const char*);
 	void printSpace();
     Point * randomPoint();
     Point * findPoint(int*);
     int get_maxDimension(int dimension);
+    void set_start(int*);
+    void set_end(int*);
     Point * get_start();
     Point * get_end();
     std::vector<Point *> getNeighbors(Point *);
+    int get_dimension();
+    QImage & get_image();
 private:
     std::vector<Point2D *> *worldMap;
     int maxValuePerDimension[2];

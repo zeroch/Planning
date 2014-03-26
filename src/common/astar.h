@@ -2,7 +2,7 @@
 #define ASTAR_H
 #include "algorithm.h"
 #include "vector"
-class Astar : Algorithm
+class Astar : public Algorithm
 {
 public:
     Astar(Space * problem);

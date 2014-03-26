@@ -6,6 +6,9 @@ Space::Space(){
 Space::~Space(){
 
 }
+void initFromImage(const char*){
+
+}
 double Space::distance(Point * x, Point * y){
     //Eucledian Distance generalized for N Dimensions
     int dimensionality = x->get_dimemsion();
@@ -38,11 +41,11 @@ int Space::get_dimension(){
 }
 
 Point * Space::get_start(){
-    return &start;
+    return start;
 }
 
 Point * Space::get_end(){
-    return &end;
+    return end;
 }
 
 bool Space::get_updated(){

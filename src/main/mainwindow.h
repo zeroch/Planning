@@ -13,7 +13,10 @@
 #include <QGraphicsPixmapItem>
 #include <QImage>
 #include <QDebug>
-
+#include "../common/point.h"
+#include "../common/space.h"
+#include "../common/space2d.h"
+#include "../common/astar.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -57,6 +60,9 @@ private:
     QPushButton *m_testLog;
     int _numTestLog;
 
+    // space and algorithm, below code are temperely. 
+    Space2D *m_space;
+    Algorithm *m_search;
 };
 
 #endif // MAINWINDOW_H

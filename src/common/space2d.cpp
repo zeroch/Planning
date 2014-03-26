@@ -8,37 +8,8 @@ Space2D::~Space2D(){
 
 }
 
-void Space2D::initialSpace(unsigned int ** raw, Point2D  start_, Point2D  end_, int * resolution){
-	num_dimension = 2;
-	updated = false;
-	int x = *resolution;
-	int y = *(resolution+1);
 
-	maxValuePerDimension[0] = x;
-	maxValuePerDimension[1] = y;
-
-	for (int i = 0; i < x; ++i)
-	{
-		for (int j = 0; j < y; ++j)
-		{
-			int coordinate[2] = { i , j };
-			bool valid_;
-
-			if(raw[i][j] == 0){
-				valid_ = true;
-			}else valid_ = false;
-
-			Point2D * new_point = new Point2D(coordinate, valid_);
-			worldMap->push_back(new_point);
-		}
-	}
-
-	start = start_;
-	end  = end_;
-
-}
-
-void Space2D::initFromImage(char *filename){
+void Space2D::initFromImage(const char *filename){
     int cols, rows;
     m_rawImage = new QImage();
     m_rawImage->load(filename);
@@ -51,20 +22,35 @@ void Space2D::initFromImage(char *filename){
     {
         for (int j = 0; j < cols; ++j)
         {
-            int coordinate[2] = { i , j };
+//            int coordinate[2] = { i , j };
+            std::array< int ,2> coordinate = { i, j};
             bool valid_;
             if(m_rawImage->pixelIndex(i,j) == 0){
                 valid_ = true;
             }else valid_ = false;
-            Point2D * new_point = new Point2D(coordinate, valid_);
+            // normal point. 
+            Point2D * new_point = new Point2D(coordinate, valid_, 0);
             worldMap->push_back(new_point);
         }
     }
+    std::cout <<"[DEBUG] image Format:"<< m_rawImage->format()<< std::endl;
+    if (m_rawImage->format() == 3)
+    {
+        QVector<QRgb> colorTable(256);
+        for(int i=0;i<256;++i)
+            colorTable[i] = qRgb(i,i,i);
+        m_rawImage->setColorTable(colorTable);
+       
+
+        *m_rawImage= m_rawImage->convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    }
+
+    std::cout <<"[DEBUG] image Format:"<< m_rawImage->format()<< std::endl;
 }
 
 void Space2D::add_point(Point2D * new_point){
 	std::cout << "new point" << std::endl;
-	Point2D *point_ = new Point2D(new_point->get_coordinates(), new_point->valid());
+	Point2D *point_ = new Point2D(new_point->get_coordinates(), new_point->valid(), 0);    // type = 0, normal
 	std::cout << "new point generated" << std::endl;
 	std::cout << point_->get_coordinate(0) <<','<< point_->get_coordinate(1) << std::endl;
 
@@ -114,17 +100,57 @@ Point * Space2D::findPoint(int* coordinates){
 }
 
 Point * Space2D::get_start(){
-    return &start;
+    return start;
 }
 
 Point * Space2D::get_end(){
-    return &end;
+    return end;
 }
 
+void Space2D::set_start(int *cood_){
+    int index = cood_[0]*maxValuePerDimension[0] + cood_[1];
+    std::cout << cood_[0] <<"and " << cood_[1] <<std::endl;
+    start = (*worldMap)[index];
+    start->set_type(1);
+    QRgb value = qRgb(255,0,0);
+    //make it a 5x5 target 
+    int x = (cood_[0]-2);
+    int y = (cood_[1]-2);
+
+    for (int i = 0; i < 5; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            m_rawImage->setPixel(x+i,y+j, value);
+        }
+    }
+}
+void Space2D::set_end(int *cood_){
+    int index = cood_[0]*maxValuePerDimension[0] + cood_[1];
+    std::cout << cood_[0] <<"and " << cood_[1] <<std::endl;
+    end = (*worldMap)[index];
+    end->set_type(2);
+    QRgb value = qRgb(0,255,0);
+
+    int x = (cood_[0]-2);
+    int y = (cood_[1]-2);
+    for (int i = 0; i < 5; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            m_rawImage->setPixel(x+i,y+j, value);
+        }
+    }
+}
 int Space2D::get_maxDimension(int dimension){
     return this->maxValuePerDimension[dimension];
 }
 
-int get_dimension(){
+int Space2D::get_dimension(){
+
    return 2;
 }
+QImage & Space2D::get_image(){
+    return *m_rawImage;
+}
+

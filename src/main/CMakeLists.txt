@@ -4,10 +4,12 @@ message("configure Main Gui")
 # Find the QtWidgets library
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core)
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 INCLUDE_DIRECTORIES(${Qt5Core_INCLUDES} ${Qt5Widgets_INCLUDES})
+include_directories(${PROJECT_SOURCE_DIR}/src/common)
 # linking dir
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
 
@@ -21,4 +23,4 @@ QT5_WRAP_CPP(kitten_HEADER_MOCS ${kitten_HEADER})
 
 ADD_EXECUTABLE(kitten ${kitten_SOURCE} ${kitten_HEADER} ${kitten_HEADER_MOCS})
 
-TARGET_LINK_LIBRARIES(kitten  ${Qt5Widgets_LIBRARIES})
+TARGET_LINK_LIBRARIES(kitten  common ${Qt5Widgets_LIBRARIES})

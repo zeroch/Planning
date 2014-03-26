@@ -67,6 +67,8 @@ void MainWindow::creatButtonGroup(){
 
     m_buttonGroup->setLayout(layout);
 
+    //TODO
+
 }
 
 
@@ -110,14 +112,12 @@ void MainWindow::creatDisplay(){
 void MainWindow::reloadDisplay(){
 
     m_scene->clear();
-    bool insp = m_image->load(fileName);
-    if(!insp){
-        qDebug() << "[DEBUG] image loading error";
-    }
+
     m_pixItem = new QGraphicsPixmapItem(QPixmap::fromImage(*m_image));
     m_scene->addItem(m_pixItem);
     m_log->append(QString("loading map: %1").arg(fileName));
 }
+
 
 void MainWindow::creatLog(){
 
@@ -141,5 +141,26 @@ void MainWindow::selectImage(){
      fileName = QFileDialog::getOpenFileName(this,
         tr("Open Image"), "/home/ze", tr("Image Files (*.png *.jpg *.bmp *.pgm)"));
     qDebug()<< fileName;
+
+    // space type should be able determinated. 
+    Space *m_space = new Space2D();
+    m_space->initFromImage(fileName.toStdString().c_str());
+
+    //TODO   for demo the start and end point on image.
+    int  start_arr [] = {170,15};
+    int  end_arr [] = {310,15};
+    m_log->append(QString("this size of map is %1 and %2").arg(m_space->get_maxDimension(0),m_space->get_maxDimension(1) ));
+    m_space->set_start(start_arr);
+    m_space->set_end(end_arr);
+    qDebug() << m_space->get_start();
+    qDebug() << m_space->get_image();
+    m_search = new Astar(m_space);
+    connect(buttons[0], SIGNAL(clicked()),m_search,SLOT(run()));
+    connect(buttons[1], SIGNAL(clicked()),m_search,SLOT(pause()));
+    connect(buttons[2], SIGNAL(clicked()),m_search,SLOT(stop()));
+
+    //
+    QImage temp_image = QImage(m_space->get_image());
+    *m_image = temp_image;
     reloadDisplay();
 }

@@ -2,6 +2,7 @@
 #define ASTAR_H
 #include "algorithm.h"
 #include "vector"
+
 class Astar : public Algorithm
 {
 public:
@@ -11,21 +12,22 @@ public:
     void pause();
     void stop();
     void runUntil();
-    Path * pathGenerated();
+    Path pathGenerated();
     Path * areaExplored();
 private:
-    int heuristic(Point * currentLoc);
-
-    Point * target;
-
     struct node{
         Point * currentPoint;
         node * previousNode;
-        std::vector<node *> nextNodes;
+        std::vector<node> nextNodes;
+        int cost;
+        bool operator ==(const node &);
     };
-
+    friend bool operator < (const node &, const node &);
+    std::vector<Point> path;
     node * head;
-    node * tail;
+    node * target;
+    int heuristic(const node & currentLoc);
+    std::vector<node> getNeighbors(node &);
+    friend bool comp(const node & rhs, const node & lfhs);
 };
-
 #endif // ASTAR_H

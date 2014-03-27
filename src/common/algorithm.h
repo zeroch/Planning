@@ -8,7 +8,7 @@ class Algorithm : public QObject
 public:
     Algorithm(Space * problem, int deltaq = 1);
     virtual ~Algorithm(){};
-    virtual Path * pathGenerated() = 0;
+    virtual Path pathGenerated() = 0;
     virtual Path * areaExplored() = 0;
 public slots:
     virtual void run() = 0;

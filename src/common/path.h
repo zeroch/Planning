@@ -5,12 +5,15 @@ class Path
 {
 public:
 	Path();
+    Path(std::vector<Point>);
 	~Path();
-	virtual void trimPath();
+    void append(Point *);
+    Point getNext();
+    void trimPath();
 	/* data */
 private:
 	Point * start;
 	Point * end;
-	std::queue<Point*> * path;
+    std::queue<Point> path;
 	
 };
